@@ -196,7 +196,26 @@ urlpatterns = [
 <title>{{ title }}</title>
 
 ```
-### Django Temples loops
+## Managing static files (css, images, js)
+```python
+# setting.py configuration add
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    "/var/www/static/",
+]
+
+# Link inde file
+# css
+<link rel="stylesheet" href="/static/css/main.css" class="src">
+
+# link img
+{% load static %}
+<img src="{% static 'my_app/example.jpg' %}" alt="My image">
+
+# 
+```
+### Django Templets in loops
++ loops in list
 ```python
 # list
 def HomePage(req):
@@ -222,9 +241,10 @@ def HomePage(req):
  <h1>{{forloop.last}} {{n}}</h1>
  <h1>{{forloop.fist}} {{n}}</h1>
  {% endfor %}
- 
-
- # Dictionary
+ ```
++ Dictionary
+```python
+# Dictionary
 def HomePage(req):
     data = {
         "title": "Home Page",
@@ -256,16 +276,87 @@ def HomePage(req):
     return render(req, "index.html", data)
 
     
-  # Distonory data OutPut in HTML
+# Distonory data OutPut in HTML
 {% for cours in courses2 %}
 <h5>{{ cours.name }}</h5>
 <p >{{ cours.description }}</p>
 <p >₹{{ cours.price|floatformat:0 }}</p> 
 {% endfor %}
- 
-
 ```
+# Django Template Using if...elif..else
 ```python
+def HomePage(req):
+    data = {
+        "title": "Home Page",
+        "courses": [
+            "Python Programming",
+            "Web Development",
+            "Cyber Security",
+            "Bug Bounty Hunting",
+            "Networking (CCNA)",
+            "Linux for Hackers",
+            "Data Analytics",
+            "Cloud Computing"
+        ],
+        "courses2": [
+            {"id": "001","name": "Python Programming","description": "Master Python from basics to advanced with hands-on exercises.","price": 3999,},
+            {"id": "002","name": "Web Development","description": "Learn HTML, CSS, JavaScript, PHP, and MySQL to build websites.","price": 4999,},
+            {"id": "003","name": "Cyber Security","description": "Become a pro in ethical hacking and cyber defense.","price": 0,},
+        ]
+    }
+    return render(req, "index.html", data)
+
+# html out put
+{% for cours in courses2 %}
+<div style="border:1px solid #ddd; padding:10px; margin-bottom:10px; border-radius:8px;">
+    <h5>{{ cours.name }}</h5>
+    <p>{{ cours.description }}</p>
+
+    {% if cours.price > 0 %}
+        <p style="color:green;">Price: ₹{{ cours.price|floatformat:0 }}</p>
+    {% elif cours.price == 0 %}
+        <p style="color:blue;">Free Course 🎉</p>
+    {% else %}
+        <p style="color:red;">Price not available</p>
+    {% endif %}
+</div>
+{% empty %}
+    <p>No courses available.</p>
+{% endfor %}
+```
+
+## Headder & Footer Include in Django HTML Tempelts Include (Include, Extends)
+
++ incude
+```py
+{% include 'includes/header.html' %}
+{% include 'includes/footer.html' %}
+```
++ Extebds
+> How It All Connects\
+base.html contains the layout (head, header, footer, and `{% block content %}`).\
+home.html, about.html, etc. extend the base file using `{% extends %}`.\
+header.html and footer.html are included in base.html using `{% include %}`.
+```py
+
+# base.html
+{% include 'includes/header.html' %}
+
+<main class="container my-5">
+    {% block content %}
+    {% endblock %}
+</main>
+
+{% include 'includes/footer.html' %}
+# header.html
+# footer.html
+# indxe.html
+{% extends "base.html" %}
+
+{% block content %}
+# All HTML Contens and Code
+{% endblock %}
+
 
 ```
 ```python
