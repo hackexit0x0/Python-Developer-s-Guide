@@ -95,7 +95,7 @@ python manage.py createsuperuser
 # Follow prompts to set username, email, and password
 ```
 ### [Configuration File]
-+ urls.py
++ settings.py
 ```Python
     # configuration templest include file : 'DIRS': [BASE_DIR / "templates"],
 TEMPLATES = [
@@ -175,4 +175,133 @@ def aboutPage(req):
 def contactPage(req):
     return render(req, "contact.html")
 ```
-+ settings.py
+### Django Pass Data HTML in templets
+```python
+# viwes.py
+# Data Pass
+def HomePage(req):
+    data = {
+        # data
+        "title":"Home Page",
+    }
+    return render(req, "index.html", data)
+
+# urls.py
+urlpatterns = [
+        # add url
+    path('', views.HomePage),
+]
+
+# tempelst Output data
+<title>{{ title }}</title>
+
+```
+### Django Temples loops
+```python
+# list
+def HomePage(req):
+    data = {
+        # data
+        "title":"Home Page",
+        'courses':[
+            'Python Programming',
+            'Web Development', 
+            'Cyber Security', 
+            'Bug Bounty Hunting',
+            'Networking (CCNA)',
+            'Linux for Hackers',
+            'Data Analytics',
+            'Cloud Computing'
+            ]
+    }
+    return render(req, "index.html", data)
+
+ # Use outputs in loop
+ {% for n in courses%}
+ <h1>{{forloop.counter0}} {{n}}</h1>
+ <h1>{{forloop.last}} {{n}}</h1>
+ <h1>{{forloop.fist}} {{n}}</h1>
+ {% endfor %}
+ 
+
+ # Dictionary
+def HomePage(req):
+    data = {
+        "title": "Home Page",
+        "courses": [
+            "Python Programming",
+            "Web Development",
+            "Cyber Security",
+            "Bug Bounty Hunting",
+            "Networking (CCNA)",
+            "Linux for Hackers",
+            "Data Analytics",
+            "Cloud Computing"
+        ],
+        "courses2": [
+            {
+                "id": "001",
+                "name": "Python Programming",
+                "description": "Master Python from basics to advanced with hands-on exercises.",
+                "price": 3999,
+            },
+            {
+                "id": "002",
+                "name": "Web Development",
+                "description": "Learn HTML, CSS, JavaScript, PHP, and MySQL to build websites.",
+                "price": 4999,
+            },
+        ]
+    }
+    return render(req, "index.html", data)
+
+    
+  # Distonory data OutPut in HTML
+{% for cours in courses2 %}
+<h5>{{ cours.name }}</h5>
+<p >{{ cours.description }}</p>
+<p >₹{{ cours.price|floatformat:0 }}</p> 
+{% endfor %}
+ 
+
+```
+```python
+
+```
+```python
+
+```
+```python
+
+```
+```python
+
+```
+```python
+
+```
+```python
+
+```
+```python
+
+```
+```python
+
+```
+```python
+
+```
+```python
+
+```
+
+```python
+
+```
+```python
+
+```
+```python
+
+```
