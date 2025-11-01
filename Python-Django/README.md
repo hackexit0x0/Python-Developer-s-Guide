@@ -357,13 +357,35 @@ header.html and footer.html are included in base.html using `{% include %}`.
 # All HTML Contens and Code
 {% endblock %}
 
+```
+## Django URL Template
+```py
+# Add code urls.py 
+path('about', views.aboutPage, name="About-Us"),
+
+# Add Html tags in Code
+<li class="nav-item"><a class="nav-link" href="{% url 'home%}">About US</a></li>
 
 ```
-```python
 
-```
+## How to Highlight link
 ```python
+# code {{request.path}}
+{{request.path}}
 
+# html code
+{% if request.path == '/' %} active {% endif %}
+{% if request.path == '/PathNameAdd' %} active {% endif %}
+
+# addd in html
+<li class="nav-item" ><a class="nav-link {% if request.path == '/' %} active {% endif %}" href="/">Home</a></li>
+<li class="nav-item"><a class="nav-link {% if request.path == '/about' %} active {% endif %}" href="{% url 'About-Us' %}">About-Us</a></li>
+
+# method 2
+{% url 'about' as url %}
+
+# html code
+<li class="nav-item" ><a class="nav-link {% if request.path == url %} active {% endif %}" href="{{ url }}">Home</a></li>
 ```
 ```python
 
