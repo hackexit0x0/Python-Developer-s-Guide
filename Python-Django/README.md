@@ -387,8 +387,87 @@ path('about', views.aboutPage, name="About-Us"),
 # html code
 <li class="nav-item" ><a class="nav-link {% if request.path == url %} active {% endif %}" href="{{ url }}">Home</a></li>
 ```
-```python
 
+### HTTP Request Methods
+### GET
+```py
+# views.py
+def get(request):
+    try:
+        num1 = int(request.GET['num1'])
+        num2 = int(request.GET['num2'])
+        result = num1 + num2
+        return render(request, 'get.html', {'result': result})
+    except:
+        pass
+    return render(request, 'get.html')
+
+
+# html form
+<form method="get">
+    <div class="mb-3 text-start">
+        <label class="form-label">First Number</label>
+          <input name="num1" type="number" class="form-control" placeholder="Enter first number">
+    </div>
+    <div class="mb-3 text-start">
+          <label class="form-label">Second Number</label>
+          <input name="num2" type="number" class="form-control" placeholder="Enter second number">
+    </div>
+    <button type="submit" class="btn btn-calc mt-3">Calculate</button>
+</form>
+
+```
+
+### POST
+```python
+# viwes.py
+def post(request):
+    try:
+        # user input
+        num1 = int(request.POST['num1'])
+        num2 = int(request.POST['num2'])
+        result = num1 + num2
+        data = {
+            "num1": num1,
+            "num2": num2,
+            "output": result
+        }
+        return render(request, 'post.html', data)
+    except:
+        pass
+    return render(request, 'post.html', data)
+
+
+# Recomended  {% csrf_token %} in not add not work
+{% csrf_token %}
+
+# HTML
+ <section class="calc-section">
+    <div class="calc-box">
+      <div class="logo mb-3"><i class="bi bi-calculator-fill"></i></div>
+      <h2>POST Method Simple Calculator</h2>
+      <p class="text-muted mb-4">Add two numbers easily</p>
+
+     <form method="POST" action="{% url 'post' %}">
+     {% csrf_token %}
+    <div class="mb-3 text-start">
+        <label class="form-label">First Number</label>
+          <input name="num1" value="{{num1}}" type="number" class="form-control" placeholder="Enter first number">
+    </div>
+    <div class="mb-3 text-start">
+          <label class="form-label">Second Number</label>
+          <input name="num2" type="number" value="{{num2}}" class="form-control" placeholder="Enter second number">
+    </div>
+    <button type="submit" class="btn btn-calc mt-3">Calculate</button>
+</form>
+
+      <div class="result-box mt-4">Result: <strong>{{ result }}</strong></div>
+
+      <a href="{% url 'Home' %}" class="text-secondary d-block mt-3">
+        <i class="bi bi-arrow-left"></i> Back to Home
+      </a>
+    </div>
+  </section>
 ```
 ```python
 
