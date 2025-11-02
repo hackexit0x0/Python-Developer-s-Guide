@@ -469,9 +469,80 @@ def post(request):
     </div>
   </section>
 ```
-```python
 
+## Page Redirection in Django
+#### 🔁 1. redirect() (Most Common)
+```py
+# ✅ Example – Redirect by URL name
+from django.shortcuts import redirect
+
+def login_view(request):
+    # After successful login
+    return redirect('Home')  # Redirects to the URL with name='Home'
+
+# ✅ Example – Redirect to a specific URL path
+def contact_submit(request):
+    return redirect('/thank-you/')
+
+# ✅ Example – Redirect with arguments
+def profile_view(request, user_id):
+    return redirect('user_profile', user_id=user_id)
 ```
+#### 🔁 2. HttpResponseRedirect
+```py
+from django.http import HttpResponseRedirect
+
+def old_page(request):
+    return HttpResponseRedirect('/new-page/')
+```
+#### 🔁 3. reverse() + HttpResponseRedirect
+```py
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+
+def go_to_profile(request, user_id):
+    url = reverse('user_profile', args=[user_id])
+    return HttpResponseRedirect(url)
+```
+#### 🔁 4. Redirect with next Parameter
+```py
+from django.shortcuts import redirect
+
+def custom_login(request):
+    next_url = request.GET.get('next', 'dashboard')  # Default if 'next' not provided
+    return redirect(next_url)
+```
+#### 🔁 5. Class-Based View Redirects
+```py
+# ✅ RedirectView
+from django.views.generic import RedirectView
+
+class GoHomeView(RedirectView):
+    url = '/home/'
+
+# Or dynamically:
+class ProfileRedirectView(RedirectView):
+    pattern_name = 'user_profile'
+    def get_redirect_url(self, *args, **kwargs):
+        return super().get_redirect_url(user_id=self.request.user.id)
+```
+#### 🔁 6. HttpResponsePermanentRedirect
+```py
+from django.http import HttpResponsePermanentRedirect
+
+def old_blog(request):
+    return HttpResponsePermanentRedirect('/new-blog/')
+```
+#### 🔁 7. Redirection in Templates
+```py
+<meta http-equiv="refresh" content="2;url={% url 'Home' %}">
+```
+
+
+
+
+
+
 ```python
 
 ```
